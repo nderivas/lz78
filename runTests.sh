@@ -34,6 +34,11 @@ info() {
 }
 
 # Main program
+info "Compilando el programa..."
+make clean
+make
+echo ""
+
 info "Ejecutando tests..."
 
 for f in test/*.txt; do
