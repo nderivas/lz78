@@ -1,3 +1,12 @@
+/*
+ * ██     ██████ ██████ ▄████▄
+ * ██      ▄▄▀▀    ▄██▀ ██▄▄██
+ * ██████ ██████  ██▀   ▀█▄▄█▀
+ * Author: Nicolás de Rivas Morillo
+ *
+ * File: Trie implementation
+ */
+
 #include "BinaryTree.hpp"
 #include <memory>
 #include <vector>

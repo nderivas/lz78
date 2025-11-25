@@ -1,28 +1,55 @@
 #!/bin/bash
 
-echo -e "\e[1;34mINFO\e[0m: Ejecutando tests..."
+echo ""
+echo "  ██      ███████ ███████  █████"
+echo "  ██         ███       ██ ██   ██"
+echo "  ██        ███       ██   █████"
+echo "  ██       ███       ██   ██   ██"
+echo "  ███████ ███████    ██    █████"
+echo "  Autor: Nicolás de Rivas Morillo"
+echo ""
+
+# Calculates the compression ratio of a file and its compressed counterpart
+get_ratio() {
+    old_size=$(du "$1" | cut -f 1)
+    new_size=$(du "$2" | cut -f 1)
+    ratio=$(echo "scale=2; (${old_size}-${new_size})*100/${old_size}" | bc)
+    old_size=$(du -h "$1" | cut -f 1)
+    new_size=$(du -h "$2" | cut -f 1)
+    echo -n "${old_size} -> ${new_size} | ${ratio}%"
+}
+
+# Prints compression ratio and sizes
+print_compression_info() {
+    echo -e -n "\033[1;32mOK\033[0m: $1\t"
+    get_ratio "$1" intermediate
+    printf "\t"
+    get_ratio "$1" "$1.gzip"
+    echo ""
+}
+
+# Prints information message
+info() {
+    echo -e "\033[1;34mINFO\033[0m: $1"
+}
+
+# Main program
+info "Ejecutando tests..."
 
 for f in test/*.txt; do
-    cat $f | bin/lz78 -c | tee intermediate | bin/lz78 -d > ${f}_error
-    diff $f ${f}_error > /dev/null
-    if [[ $? -ne 0 ]]; then
+    if [ "$f" = "test/*.txt" ]; then # Check if the wildcard expanded
+        info "No se han encontrado tests en ./test"
+        break
+    fi
+    cat "$f" | bin/lz78 -c | tee intermediate | bin/lz78 -d > "${f}_error" # Compress and decompress the file
+    if ! diff "$f" "${f}_error" > /dev/null; then # If diff is not ok theres an error
         rm -f intermediate
-        echo -e "\e[1;31mERROR\e[0m: el archivo $f no produce la misma salida que entrada. Salida: ${f}_error."
-    else
-        peso_antiguo=$(du $f | cut -f 1)
-        peso_nuevo=$(du intermediate | cut -f 1)
-        tasa=$(echo "scale=2; (${peso_antiguo}-${peso_nuevo})*100/${peso_antiguo}" | bc)
-        gzip -c $f > ${f}.gzip
-        peso_gzip=$(du ${f}.gzip | cut -f 1)
-        tasa_gzip=$(echo "scale=2; (${peso_antiguo}-${peso_gzip})*100/${peso_antiguo}" | bc)
-        peso_antiguo=$(du -h $f | cut -f 1)
-        peso_nuevo=$(du -h intermediate | cut -f 1)
-        peso_gzip=$(du -h ${f}.gzip | cut -f 1)
-        echo -e "\e[1;32mOK\e[0m: $f\t${peso_antiguo} -> ${peso_nuevo} | ${tasa}%\t${peso_antiguo} -> ${peso_gzip} | ${tasa_gzip}%"
-        rm -f ${f}_error
-        rm -f ${f}.gzip
-        rm -f intermediate
+        echo -e "\033[1;31mERROR\033[0m: el archivo $f no produce la misma salida que entrada. Salida: ${f}_error."
+    else # Else, the test is passed
+        gzip -c "$f" > "${f}.gzip"
+        print_compression_info "$f"
+        rm -f "${f}_error" intermediate "${f}.gzip"
     fi
 done
 
-echo -e "\e[1;34mINFO\e[0m: Tests finalizados."
+info "Tests finalizados."

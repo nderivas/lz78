@@ -1,3 +1,12 @@
+/*
+ * ██     ██████ ██████ ▄████▄
+ * ██      ▄▄▀▀    ▄██▀ ██▄▄██
+ * ██████ ██████  ██▀   ▀█▄▄█▀
+ * Author: Nicolás de Rivas Morillo
+ *
+ * File: LZ78 algorithm implementation
+ */
+
 #include "LZ78.hpp"
 #include "BinaryTree.hpp"
 #include "BitInputStream.hpp"
