@@ -19,7 +19,7 @@ get_ratio() {
     echo -n "${old_size} -> ${new_size} | ${ratio}%"
 }
 
-# Prints compression ratio and sizes
+# Prints compression ratio and sizes (Our results to the left and gzips results to the right)
 print_compression_info() {
     echo -e -n "\033[1;32mOK\033[0m: $1\t"
     get_ratio "$1" intermediate

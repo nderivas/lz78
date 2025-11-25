@@ -29,22 +29,30 @@ using ChildrenVector = std::vector<std::unique_ptr<BinaryTreeNode>>;
 
 // Represent a node of the Trie
 class BinaryTreeNode {
-    LZTuple value;                  // LZ78 tuple value of this node
-    BinaryTreeNode *backReference;  // Reference to the parent node
-    unsigned totalTuples, maxDepth; // Node counters
+    LZTuple value;                 // LZ78 tuple value of this node
+    BinaryTreeNode *backReference; // Reference to the parent node
+    // unsigned totalTuples, maxDepth; // Node counters
+    unsigned totalTuples; // Node counters
+    // BinaryTreeNode(unsigned identifier, char terminator,
+    //                BinaryTreeNode *backReference)
+    //     : value(identifier, terminator), backReference(backReference),
+    //       totalTuples(0), maxDepth(0), children() {};
     BinaryTreeNode(unsigned identifier, char terminator,
                    BinaryTreeNode *backReference)
         : value(identifier, terminator), backReference(backReference),
-          totalTuples(0), maxDepth(0), children() {};
+          totalTuples(0), children() {};
 
   public:
     ChildrenVector children;
+    // BinaryTreeNode()
+    //     : value(0, '\0'), backReference(nullptr), totalTuples(1),
+    //     maxDepth(0),
+    //       children() {};
     BinaryTreeNode()
-        : value(0, '\0'), backReference(nullptr), totalTuples(1), maxDepth(0),
-          children() {};
+        : value(0, '\0'), backReference(nullptr), totalTuples(1), children() {};
 
     // Getters
-    unsigned getMaxDepth() const;
+    // unsigned getMaxDepth() const;
     BinaryTreeNode *getBackReference() const;
     unsigned getIdentifier() const;
     char getTerminator() const;
