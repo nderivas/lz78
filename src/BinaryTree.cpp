@@ -14,7 +14,6 @@
 using namespace std;
 
 // Getters
-// unsigned BinaryTreeNode::getMaxDepth() const { return this->maxDepth; }
 BinaryTreeNode *BinaryTreeNode::getBackReference() const {
     return this->backReference;
 }
@@ -33,7 +32,6 @@ void dfs(const BinaryTreeNode *const node, vector<LZTuple> &v) {
 
 std::vector<LZTuple> BinaryTreeNode::getLZTuples() {
     vector<LZTuple> response = vector<LZTuple>(this->totalTuples);
-    // response.reserve(this->maxDepth); // Reserve minimum space
     response.reserve(this->totalTuples); // Reserve minimum space
     for (auto &ptr : this->children)     // Traverse the trie
         dfs(ptr.get(), response);
@@ -65,8 +63,6 @@ bool BinaryTreeNode::addChild(std::string child) {
         std::unique_ptr<BinaryTreeNode>(new BinaryTreeNode(
             this->totalTuples, child[child.size() - 1], currentNode)));
     // Update
-    // this->maxDepth =
-    //     this->maxDepth > child.size() ? this->maxDepth : child.size();
     this->totalTuples++;
     return true;
 }
